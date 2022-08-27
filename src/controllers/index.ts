@@ -1,4 +1,4 @@
-import FamilyControllers from './FamilyController';
+import QuestionController from './QuestionController';
+import FamilyController from './FamilyController';
 
-// controller index file
-export { FamilyControllers };
+export { FamilyController, QuestionController };
