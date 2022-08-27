@@ -205,10 +205,33 @@ const getWeekList = async (client: any, userId: number) => {
   return convertSnakeToCamel.keysToCamel(weeks[0]);
 };
 
+const addPhoto = async (client: any, userId: number, location: string, week: number) => {
+  const { rows: userFamily } = await client.query(
+    `
+    SELECT *
+    FROM "user" u
+    WHERE u.id = $1
+    `,
+    [userId],
+  );
+
+  const familyId = userFamily[0].family_id;
+  const { rows } = await client.query(
+    `
+    INSERT INTO photo(url, week, family_id)
+    VALUES ($1, $2, $3)
+    RETURNING * 
+    `,
+    [location, week, familyId],
+  );
+  return convertSnakeToCamel.keysToCamel(rows[0]);
+};
+
 export default {
   getQuestion,
   addQuestion,
   postAnswer,
   postQuestion,
   getWeekList,
+  addPhoto,
 };
