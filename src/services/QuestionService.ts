@@ -63,7 +63,7 @@ const addQuestion = async (client: any) => {
       `,
       [id],
     );
-
+    let question;
     if (!checkedFamilyQuestion[0]) {
       const { rows } = await client.query(
         `
@@ -73,15 +73,7 @@ const addQuestion = async (client: any) => {
         `,
         [order],
       );
-      const { rows: insertWeek } = await client.query(
-        `
-        INSERT INTO week(family_id, question, week_num, day)
-        VALUES ($1, $2, $3, $4)
-        RETURNING * 
-        `,
-        [id, rows[0].question, week, day],
-      );
-
+      question = rows[0].question;
       const { rows: updateFamily } = await client.query(
         `
         UPDATE family
@@ -91,7 +83,33 @@ const addQuestion = async (client: any) => {
         `,
         [id],
       );
+    } else {
+      const { rows } = await client.query(
+        `
+        SELECT *
+        FROM family_question
+        WHERE family_id = $1
+        ORDER BY created_at
+        `,
+        [id],
+      );
+      question = rows[0].question;
+      const { rows: deleteFamilyQuestion } = await client.query(
+        `
+        DELETE FROM family_question
+        WHERE id = $1
+        `,
+        [rows[0].id],
+      );
     }
+    const { rows: insertWeek } = await client.query(
+      `
+      INSERT INTO week(family_id, question, week_num, day)
+      VALUES ($1, $2, $3, $4)
+      RETURNING * 
+      `,
+      [id, question, week, day],
+    );
   }
 
   return convertSnakeToCamel.keysToCamel(rows[0]);
