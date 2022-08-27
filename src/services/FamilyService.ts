@@ -3,11 +3,29 @@ const convertSnakeToCamel = require('../modules/convertSnakeToCamel');
 const createFamily = async (client: any, code: string) => {
   const { rows } = await client.query(
     `
-    INSERT INTO family (code)
-    VALUES ($1)
+    INSERT INTO family (code, "order")
+    VALUES ($1, $2)
     RETURNING *
     `,
-    [code],
+    [code, '1'],
+  );
+  const { rows: question } = await client.query(
+    `
+    SELECT *
+    FROM question
+    WHERE "order" = $1
+    `,
+    [1],
+  );
+  var d = new Date();
+  var n = d.getDay();
+  const { rows: insertWeek } = await client.query(
+    `
+    INSERT INTO week (family_id, question, week_num, day)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *
+    `,
+    [rows[0].id, question[0].question, 1, n],
   );
   return convertSnakeToCamel.keysToCamel(rows[0]);
 };

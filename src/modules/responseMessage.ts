@@ -4,6 +4,8 @@ const message = {
   BAD_REQUEST: '잘못된 요청',
   INTERNAL_SERVER_ERROR: '서버 내부 오류',
   SUCCESS: '성공',
+  NULL_VALUE_TOKEN: '토큰이 없습니다.',
+  INVALID_TOKEN: '유효하지 않은 토큰입니다.',
 };
 
 export default message;
