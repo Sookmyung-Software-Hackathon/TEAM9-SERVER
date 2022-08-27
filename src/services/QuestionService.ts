@@ -65,10 +65,11 @@ const addQuestion = async (client: any) => {
       [id],
     );
     console.log(rows);
-    let week = rows[0].week_num + 1;
+    let week = rows[0].week_num;
     let day = rows[0].day;
     if (day == 6) {
       day = 0;
+      week = week + 1;
     } else {
       day = day + 1;
     }
@@ -91,7 +92,30 @@ const addQuestion = async (client: any) => {
         `,
         [order],
       );
-      question = rows[0].question;
+
+      if (!rows[0]) {
+        const { rows } = await client.query(
+          `
+          UPDATE family
+          SET "order" = 0
+          WHERE id = $1
+          RETURNING *
+          `,
+          [id],
+        );
+        const { rows: selectQuestion } = await client.query(
+          `
+          SELECT *
+          FROM question
+          WHERE "order" = $1
+          `,
+          [1],
+        );
+        question = selectQuestion[0].question;
+      } else {
+        question = rows[0].question;
+      }
+
       const { rows: updateFamily } = await client.query(
         `
         UPDATE family
