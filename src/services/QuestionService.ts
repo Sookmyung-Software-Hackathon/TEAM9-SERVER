@@ -9,7 +9,6 @@ const getQuestion = async (client: any, userId: number) => {
     `,
     [userId],
   );
-  console.log(rows);
 
   const { rows: question } = await client.query(
     `
@@ -27,8 +26,9 @@ const getQuestion = async (client: any, userId: number) => {
     WHERE week_id = $1 AND user_id = $2
     
     `,
-    [question[0].week, userId],
+    [question[0].id, userId],
   );
+  console.log(answer);
   let isAnswered = true;
   if (!answer[0]) {
     isAnswered = false;
@@ -166,11 +166,33 @@ const postAnswer = async (client: any, userId: number, weekId: number, answer: s
     `,
     [weekId, answer, userId],
   );
-  console.log(rows);
-  return convertSnakeToCamel.keysToCamel(rows);
+  return convertSnakeToCamel.keysToCamel(rows[0]);
+};
+
+const postQuestion = async (client: any, userId: number, question: string) => {
+  const { rows } = await client.query(
+    `
+    SELECT *
+    FROM "user"u
+    WHERE id = $1
+    `,
+    [userId],
+  );
+  const familyId = rows[0].family_id;
+
+  const { rows: insertFamilyQuestion } = await client.query(
+    `
+    INSERT INTO family_question(family_id, question)
+    VALUES ($1, $2)
+    RETURNING * 
+    `,
+    [familyId, question],
+  );
+  return convertSnakeToCamel.keysToCamel(insertFamilyQuestion[0]);
 };
 export default {
   getQuestion,
   addQuestion,
   postAnswer,
+  postQuestion,
 };
