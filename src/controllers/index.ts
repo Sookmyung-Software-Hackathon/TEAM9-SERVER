@@ -1,4 +1,4 @@
 import QuestionController from './QuestionController';
 import FamilyController from './FamilyController';
-
-export { FamilyController, QuestionController };
+import PhotoController from './PhotoController';
+export { FamilyController, QuestionController, PhotoController };
