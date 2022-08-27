@@ -9,19 +9,37 @@ const getQuestion = async (client: any, userId: number) => {
     `,
     [userId],
   );
-  rows[0].family_id;
-  const order = rows[0].order + 1;
+  console.log(rows);
 
   const { rows: question } = await client.query(
     `
     SELECT *
-    FROM 
-    WHERE 
+    FROM week
+    WHERE family_id = $1
+    ORDER BY created_at DESC
     `,
-    [userId],
+    [rows[0].family_id],
   );
+  const { rows: answer } = await client.query(
+    `
+    SELECT *
+    FROM answer
+    WHERE week_id = $1 AND user_id = $2
+    
+    `,
+    [question[0].week, userId],
+  );
+  let isAnswered = true;
+  if (!answer[0]) {
+    isAnswered = false;
+  }
+  const data = {
+    id: question[0].id,
+    question: question[0].question,
+    isAnswered,
+  };
 
-  return convertSnakeToCamel.keysToCamel(rows[0]);
+  return convertSnakeToCamel.keysToCamel(data);
 };
 
 const addQuestion = async (client: any) => {
