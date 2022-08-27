@@ -1,2 +1,2 @@
-# TEAM9-SERVER
-내 코드보게? 보지마라 채정아 장서현 전희선ㅋㅋ
+# node-typescript-init
+node.js, typescript, mongoDB(mongoose) boiler-plate
