@@ -246,12 +246,12 @@ const getDayAnswer = async (client: any, userId: number, week: number, day: numb
     `
     SELECT *
     FROM week, answer
-    WHERE week_num = $1 AND day = $2 AND week.id = answer.week_id AND user_id = $3
+    WHERE week_num = $1 AND day = $2 AND week.id = answer.week_id
     `,
-    [week, day, userId],
+    [week, day],
   );
 
-  return convertSnakeToCamel.keysToCamel(rows[0]);
+  return convertSnakeToCamel.keysToCamel(rows);
 };
 export default {
   getQuestion,
