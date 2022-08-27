@@ -104,6 +104,21 @@ const addPhoto = async (req: Request, res: Response) => {
   }
 };
 
+const getWeekQuestion = async (req: Request, res: Response) => {
+  const userId: number = req.body.user.id;
+  const week: number = req.params.week as unknown as number;
+  let client;
+  try {
+    client = await db.connect(req);
+    const result = await QuestionService.getWeekQuestion(client, userId, week);
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SUCCESS, result));
+  } catch (error) {
+    console.log(error);
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  } finally {
+    client.release();
+  }
+};
 export default {
   getQuestion,
   addQuestion,
@@ -111,4 +126,5 @@ export default {
   postQuestion,
   getWeekList,
   addPhoto,
+  getWeekQuestion,
 };

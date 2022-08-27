@@ -227,6 +227,20 @@ const addPhoto = async (client: any, userId: number, location: string, week: num
   return convertSnakeToCamel.keysToCamel(rows[0]);
 };
 
+const getWeekQuestion = async (client: any, userId: number, week: number) => {
+  const { rows } = await client.query(
+    `
+    SELECT *
+    FROM "user" u, week
+    WHERE u.id = $1 AND u.family_id = week.family_id AND week.week_num = $2
+    ORDER BY week_num
+    `,
+    [userId, week],
+  );
+
+  return convertSnakeToCamel.keysToCamel(rows);
+};
+
 export default {
   getQuestion,
   addQuestion,
@@ -234,4 +248,5 @@ export default {
   postQuestion,
   getWeekList,
   addPhoto,
+  getWeekQuestion,
 };
