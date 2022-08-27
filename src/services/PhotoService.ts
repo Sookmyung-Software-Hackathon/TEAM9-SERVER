@@ -11,7 +11,7 @@ const getPhoto = async (client: any, userId: number) => {
     [userId],
   );
 
-  return convertSnakeToCamel.keysToCamel(rows[0]);
+  return convertSnakeToCamel.keysToCamel(rows);
 };
 
 export default {
