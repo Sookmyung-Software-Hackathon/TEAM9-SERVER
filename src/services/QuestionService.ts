@@ -190,9 +190,25 @@ const postQuestion = async (client: any, userId: number, question: string) => {
   );
   return convertSnakeToCamel.keysToCamel(insertFamilyQuestion[0]);
 };
+
+const getWeekList = async (client: any, userId: number) => {
+  const { rows: weeks } = await client.query(
+    `
+    SELECT max(week_num)
+    FROM "user" u, week
+    WHERE u.id = $1 AND u.family_id = week.family_id
+    `,
+    [userId],
+  );
+  console.log(weeks);
+
+  return convertSnakeToCamel.keysToCamel(weeks[0]);
+};
+
 export default {
   getQuestion,
   addQuestion,
   postAnswer,
   postQuestion,
+  getWeekList,
 };
