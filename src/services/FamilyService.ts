@@ -43,6 +43,17 @@ const joinFamily = async (client: any, code: string, device: string) => {
     throw 400;
   }
 
+  const { rows: checkedUser } = await client.query(
+    `
+      SELECT *
+      FROM "user"
+      WHERE device = $1
+      `,
+    [device],
+  );
+  if (checkedUser[0]) {
+    throw 400;
+  }
   const { rows: user } = await client.query(
     `
         INSERT INTO "user" (family_id, device)
