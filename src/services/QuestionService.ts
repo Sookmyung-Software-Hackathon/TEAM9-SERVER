@@ -241,6 +241,18 @@ const getWeekQuestion = async (client: any, userId: number, week: number) => {
   return convertSnakeToCamel.keysToCamel(rows);
 };
 
+const getDayAnswer = async (client: any, userId: number, week: number, day: number) => {
+  const { rows } = await client.query(
+    `
+    SELECT *
+    FROM week, answer
+    WHERE week_num = $1 AND day = $2 AND week.id = answer.week_id AND user_id = $3
+    `,
+    [week, day, userId],
+  );
+
+  return convertSnakeToCamel.keysToCamel(rows[0]);
+};
 export default {
   getQuestion,
   addQuestion,
@@ -249,4 +261,5 @@ export default {
   getWeekList,
   addPhoto,
   getWeekQuestion,
+  getDayAnswer,
 };

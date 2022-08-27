@@ -6,6 +6,7 @@ const router = Router();
 
 router.post('/family', auth, QuestionController.postQuestion);
 router.get('/testQuestion', QuestionController.addQuestion);
+router.get('/list/:week/:day', auth, QuestionController.getDayAnswer);
 router.post('/list/:week', upload.single('file'), auth, QuestionController.addPhoto);
 router.get('/list/:week', auth, QuestionController.getWeekQuestion);
 router.get('/list', auth, QuestionController.getWeekList);
