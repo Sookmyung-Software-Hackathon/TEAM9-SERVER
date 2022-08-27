@@ -1,10 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 const app = express();
-
 // import connectDB from './loaders/db';
 import routes from './routes';
 const schedule = require('node-schedule');
-
+import QuestionController from './controllers/QuestionController';
 require('dotenv').config();
 
 app.use(express.urlencoded({ extended: true }));
@@ -16,6 +15,14 @@ interface ErrorType {
   message: string;
   status: number;
 }
+
+//push
+const rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0, 6)];
+rule.hour = 0;
+rule.minute = 0;
+rule.tz = 'Asia/Seoul';
+const job = schedule.scheduleJob(rule, QuestionController.addQuestion);
 
 //push
 // var admin = require('firebase-admin');
