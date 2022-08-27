@@ -157,7 +157,20 @@ const addQuestion = async (client: any) => {
   return convertSnakeToCamel.keysToCamel(rows[0]);
 };
 
+const postAnswer = async (client: any, userId: number, weekId: number, answer: string) => {
+  const { rows } = await client.query(
+    `
+    INSERT INTO answer(week_id, answer, user_id)
+    VALUES ($1, $2, $3)
+    RETURNING * 
+    `,
+    [weekId, answer, userId],
+  );
+  console.log(rows);
+  return convertSnakeToCamel.keysToCamel(rows);
+};
 export default {
   getQuestion,
   addQuestion,
+  postAnswer,
 };

@@ -22,7 +22,7 @@ const addQuestion = async (req: Request, res: Response) => {
 };
 
 const getQuestion = async (req: Request, res: Response) => {
-  const userId = req.body.user.id;
+  const userId: number = req.body.user.id;
   let client;
   try {
     client = await db.connect(req);
@@ -36,7 +36,25 @@ const getQuestion = async (req: Request, res: Response) => {
   }
 };
 
+const postAnswer = async (req: Request, res: Response) => {
+  const userId: number = req.body.user.id;
+  const weekId: number = req.body.id;
+  const answer: string = req.body.answer;
+  let client;
+  try {
+    client = await db.connect(req);
+    const result = await QuestionService.postAnswer(client, userId, weekId, answer);
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SUCCESS, result));
+  } catch (error) {
+    console.log(error);
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+  } finally {
+    client.release();
+  }
+};
+
 export default {
   getQuestion,
   addQuestion,
+  postAnswer,
 };
