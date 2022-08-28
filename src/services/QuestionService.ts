@@ -241,9 +241,9 @@ const getWeekQuestion = async (client: any, userId: number, week: number) => {
     `
     SELECT *
     FROM photo
-    WHERE photo.family_id = $1
+    WHERE photo.family_id = $1 AND week = $2
     `,
-    [rows[0].family_id],
+    [rows[0].family_id, week],
   );
   let photoUrl;
   if (!photo[0]) {
