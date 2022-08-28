@@ -52,7 +52,7 @@ const joinFamily = async (client: any, code: string, device: string) => {
     [device],
   );
   if (checkedUser[0]) {
-    throw 400;
+    return convertSnakeToCamel.keysToCamel(checkedUser[0]);
   }
   const { rows: user } = await client.query(
     `
