@@ -196,7 +196,7 @@ const getWeekList = async (client: any, userId: number) => {
     `
     SELECT max(week_num)
     FROM "user" u, week
-    WHERE u.id = $1 AND u.family_id = week.family_id
+    WHERE u.id = $1 AND u.family_id = week.family_id AND day = 6
     `,
     [userId],
   );
