@@ -22,7 +22,7 @@ rule.dayOfWeek = [0, new schedule.Range(0, 6)];
 rule.hour = 0;
 rule.minute = 0;
 rule.tz = 'Asia/Seoul';
-const job = schedule.scheduleJob(rule, QuestionController.addQuestion);
+// const job = schedule.scheduleJob(rule, QuestionController.addQuestion);
 
 //push
 // var admin = require('firebase-admin');
