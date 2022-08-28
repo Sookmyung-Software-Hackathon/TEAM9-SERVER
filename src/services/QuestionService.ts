@@ -252,7 +252,7 @@ const getWeekQuestion = async (client: any, userId: number, week: number) => {
     photoUrl = photo[0].url;
   }
   const data = {
-    question: rows,
+    question: convertSnakeToCamel.keysToCamel(rows),
     photo: photoUrl,
   };
   return convertSnakeToCamel.keysToCamel(data);
