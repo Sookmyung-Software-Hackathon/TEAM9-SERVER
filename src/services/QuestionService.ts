@@ -242,6 +242,7 @@ const getWeekQuestion = async (client: any, userId: number, week: number) => {
     SELECT *
     FROM photo
     WHERE photo.family_id = $1 AND week = $2
+    ORDER BY created_at DESC
     `,
     [rows[0].family_id, week],
   );
