@@ -154,7 +154,7 @@ const addQuestion = async (client: any) => {
     );
   }
 
-  return convertSnakeToCamel.keysToCamel(rows[0]);
+  return;
 };
 
 const postAnswer = async (client: any, userId: number, weekId: number, answer: string) => {

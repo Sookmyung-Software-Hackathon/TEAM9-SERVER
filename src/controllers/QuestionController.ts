@@ -11,8 +11,8 @@ const addQuestion = async (req: Request, res: Response) => {
   let client;
   try {
     client = await db.connect(req);
-    const result = await QuestionService.addQuestion(client);
-    res.status(statusCode.OK).send(util.success(statusCode.OK, message.SUCCESS, result));
+    await QuestionService.addQuestion(client);
+    return res.status(statusCode.OK).send(util.success(statusCode.OK, message.SUCCESS));
   } catch (error) {
     console.log(error);
     return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -26,6 +26,7 @@ const getQuestion = async (req: Request, res: Response) => {
   let client;
   try {
     client = await db.connect(req);
+    console.log(userId);
     const result = await QuestionService.getQuestion(client, userId);
     res.status(statusCode.OK).send(util.success(statusCode.OK, message.SUCCESS, result));
   } catch (error) {
