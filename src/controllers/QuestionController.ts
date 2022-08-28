@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
-import { nanoid } from 'nanoid';
 import QuestionService from '../services/QuestionService';
 const getJWTtoken = require('../modules/getJWTtoken');
 const db = require('../loaders/db');
