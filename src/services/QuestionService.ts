@@ -237,8 +237,25 @@ const getWeekQuestion = async (client: any, userId: number, week: number) => {
     `,
     [userId, week],
   );
-
-  return convertSnakeToCamel.keysToCamel(rows);
+  const { rows: photo } = await client.query(
+    `
+    SELECT *
+    FROM photo
+    WHERE photo.family_id = $1
+    `,
+    [rows[0].family_id],
+  );
+  let photoUrl;
+  if (!photo[0]) {
+    photoUrl = null;
+  } else {
+    photoUrl = photo[0].url;
+  }
+  const data = {
+    question: rows,
+    photo: photoUrl,
+  };
+  return convertSnakeToCamel.keysToCamel(data);
 };
 
 const getDayAnswer = async (client: any, userId: number, week: number, day: number) => {
